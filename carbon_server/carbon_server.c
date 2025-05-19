@@ -183,8 +183,10 @@ DWORD WINAPI ClientHandler(void* clientSocket) {
 
    while ((recv(sock, &op, sizeof(char), 0)) > 0)  
    {  
-       if (op == 1)  
+	   printf("op: %c\n", op);
+       if (op == 'l')
        {  
+		   printf("Login\n");
            recv(sock, (char*)&user, sizeof(user), 0);  
 
            printf("%s\n", user.id);  
@@ -193,20 +195,22 @@ DWORD WINAPI ClientHandler(void* clientSocket) {
            // Echo back  
            if (login_process(&user) == 1)  
            {  
-               send(sock, "s", 1, 0);  
+               send(sock, "s", 1, 0); 
            }  
            else  
            {  
                send(sock, "f", 1, 0);  
            }  
        }  
-       else if (op == 2)  
+       else if (op == 's')
        {  
+		   printf("Sign in\n");
            recv(sock, (char*)&user, sizeof(user), 0);  
            signin(user);  
        }  
-       else if (op == 3)  
+       else if (op == 'a')
        {  
+		   printf("Add\n");
            data = (userdat*)malloc(sizeof(userdat));   
            if (data == NULL)  
            {  
@@ -214,12 +218,14 @@ DWORD WINAPI ClientHandler(void* clientSocket) {
                break;  
            }  
            recv(sock, (char*)data, sizeof(userdat), 0);  
+           today(&(data->today));
            data_store(data, user.id);  
            free(data);   
            data = NULL;  
        }  
-       else if (op == 4)  
+       else if (op == 'i')
        {  
+		   printf("Import\n");
            data = Import_Data(user.id, &cnt);  
            if (data != NULL)  
            {  
