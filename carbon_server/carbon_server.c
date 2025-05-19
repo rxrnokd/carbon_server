@@ -234,6 +234,11 @@ DWORD WINAPI ClientHandler(void* clientSocket) {
                free(data);  
                data = NULL;  
            }  
+		   else if (data == NULL)
+		   {
+			   cnt = 0;
+			   send(sock, (char*)&cnt, sizeof(cnt), 0);
+		   }
        }  
    }  
 
