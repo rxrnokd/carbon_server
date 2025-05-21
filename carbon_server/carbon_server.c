@@ -10,6 +10,7 @@
 #pragma comment(lib, "ws2_32.lib")
 
 #define PORT 25565
+#define MAX_CLIENTS 10
 
 typedef struct {
     char id[10];
@@ -23,6 +24,8 @@ typedef struct {
     double total;
     struct tm today;
 } userdat;
+
+int clnt_cnt = 0;
 
 DWORD WINAPI ClientHandler(void* clientSocket);
 
@@ -61,7 +64,11 @@ int main()
             continue;
         }
         printf("클라이언트 연결됨\n");
-
+		clnt_cnt++;
+		if (clnt_cnt > MAX_CLIENTS) {
+			break;
+		}
+        printf("현재 클라이언트 수: %d\n", clnt_cnt);
         // 쓰레드 생성
         CreateThread(NULL, 0, ClientHandler, (void*)clientSocket, 0, NULL);
     }
@@ -243,6 +250,8 @@ DWORD WINAPI ClientHandler(void* clientSocket) {
    }  
 
    printf("클라이언트 연결 종료\n");  
+   clnt_cnt--;
+   printf("현재 클라이언트 수: %d\n", clnt_cnt);
    closesocket(sock);  
    return 0;  
 }
