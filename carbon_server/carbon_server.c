@@ -19,7 +19,10 @@ typedef struct {
 
 typedef struct {
     int car;
+    int bus;
+    int subway;
     int elec;
+    int egg;
     int disposable;
     double total;
     struct tm today;
@@ -36,10 +39,8 @@ int main()
     struct sockaddr_in server, client;
     int c;
 
-    // Winsock 초기화
     WSAStartup(MAKEWORD(2, 2), &wsa);
 
-    // 소켓 생성
     serverSocket = socket(AF_INET, SOCK_STREAM, 0);
 
     // 서버 주소 설정
@@ -47,10 +48,8 @@ int main()
     server.sin_addr.s_addr = INADDR_ANY;
     server.sin_port = htons(PORT);
 
-    // 바인딩
     bind(serverSocket, (struct sockaddr*)&server, sizeof(server));
 
-    // 대기
     listen(serverSocket, 5);
 
     printf("서버가 실행 중입니다...\n");
@@ -186,7 +185,7 @@ DWORD WINAPI ClientHandler(void* clientSocket) {
    userinf user;  
    char op;  
    int cnt;  
-   userdat* data = NULL; // Initialize the pointer to NULL  
+   userdat* data = NULL; 
 
    while ((recv(sock, &op, sizeof(char), 0)) > 0)  
    {  
@@ -198,8 +197,7 @@ DWORD WINAPI ClientHandler(void* clientSocket) {
 
            printf("%s\n", user.id);  
            printf("%s\n", user.password);  
-
-           // Echo back  
+ 
            if (login_process(&user) == 1)  
            {  
                send(sock, "s", 1, 0); 
