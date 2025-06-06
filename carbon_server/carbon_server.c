@@ -19,8 +19,7 @@ typedef struct {
 
 typedef struct {
     int car;
-    int bus;
-    int subway;
+    int gas;
     int elec;
     int egg;
     int disposable;
@@ -68,7 +67,7 @@ int main()
 			break;
 		}
         printf("현재 클라이언트 수: %d\n", clnt_cnt);
-        // 쓰레드 생성
+        
         CreateThread(NULL, 0, ClientHandler, (void*)clientSocket, 0, NULL);
     }
 
